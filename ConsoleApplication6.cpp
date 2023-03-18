@@ -1,32 +1,37 @@
 
 #include <iostream>
-class bad_length {};
+class bad_length:std::exception{
+public:const char* what() const override { return "Ошибка создания фигуры"; }};
 void thr() {
 	throw bad_length();
+
 }
 class Figure {
 public:
 	Figure() {}
 	virtual void print_info() const {
 		std::cout << "Name : Figure\n";
-
-		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << std::endl;
-		std::cout << "Corners : A = " << A << " B = " << C << " C = " << C << std::endl;
-		std::cout << "\n";
-	}
-	 void check() const {
-	
-		 try {
-			 if (A + B + C == 180) {
-				 std::cout << "Правильный трегуольник";
-			 }
-			 else {
-				 thr();
-			 }
-		 }
-		catch (const bad_length&) {
-			std::cout << "Heправильный трегуольник";
+		if (check() == true) {
+			std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << std::endl;
+			std::cout << "Corners : A = " << A << " B = " << C << " C = " << C << std::endl;
+			std::cout << "\n";
 		}
+	}
+	bool check() const {
+
+		try {
+			if (A + B + C == 180) {
+				std::cout << "Правильный трегуольник";
+				return true;
+			}
+			else {
+				thr();
+				return false;
+			}
+		}
+		catch (const bad_length& ex) {std::cout << ex.what() << "Heправильный трегуольник cумма не равна 180\n" << std::endl;}
+		
+		
 	}
 protected:
 
@@ -47,12 +52,13 @@ public:
 	}
 	void print_info() const override {
 		std::cout << "Name : Triangle\n";
-		check();
-		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << std::endl;
-		std::cout << "Corners : A = " << A << " B = " << B << " C = " << C << std::endl;
-		std::cout << "\n";
+		if (check() == true) {
+			std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << std::endl;
+			std::cout << "Corners : A = " << A << " B = " << B << " C = " << C << std::endl;
+			std::cout << "\n";
+		}
 	}
-	
+
 
 };
 class Quadrate :public Figure {
@@ -72,23 +78,25 @@ public:
 	}
 	void print_info() const override {
 		std::cout << "Name : Quadrate\n";
-		check();
-		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << " d = " << d << std::endl;
-		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << " D = " << D << std::endl;
-		std::cout << "\n";
+		if (check() == true) {
+			std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << " d = " << d << std::endl;
+			std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << " D = " << D << std::endl;
+			std::cout << "\n";
+		}
 	}
-	void check() const  {
+	bool check() const {
 		try {
 			if (A + B + C + D == 360) {
 				std::cout << "Правильный quadrate";
+				return true;
 			}
 			else {
 				thr();
+				return false;
 			}
 		}
-		catch (const bad_length&) {
-			std::cout << "Heправильный Quadrate";
-		}
+		catch (const bad_length& ex) { std::cout << ex.what() << "Heправильный четырехугол cумма не равна 360\n" << std::endl; }
+		
 
 	}
 
@@ -107,10 +115,11 @@ public:
 	void print_info() const override {
 
 		std::cout << "Name : Prtr\n";
-		check();
-		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << std::endl;
-		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << std::endl;
-		std::cout << "\n";
+		if (check() == true) {
+			std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << std::endl;
+			std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << std::endl;
+			std::cout << "\n";
+		}
 	}
 
 };
@@ -124,10 +133,11 @@ public:
 	}
 	void print_info() const override {
 		std::cout << "Name : Rbtr\n";
-		check();
+		if(check()==true){
 		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << std::endl;
 		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << std::endl;
 		std::cout << "\n";
+		}
 	}
 
 };
@@ -140,10 +150,11 @@ public:
 	}
 	void print_info() const override {
 		std::cout << "Name : Rtr\n";
-		check();
-		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << std::endl;
-		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << std::endl;
-		std::cout << "\n";
+		if (check() == true) {
+			std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << std::endl;
+			std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << std::endl;
+			std::cout << "\n";
+		}
 	}
 
 };
@@ -154,10 +165,10 @@ public:
 	}
 	void print_info() const override {
 		std::cout << "Name : Prmu\n";
-		check();
+		if(check()==true){
 		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << " d = " << d << std::endl;
 		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << " D = " << D << std::endl;
-		std::cout << "\n";
+		std::cout << "\n";}
 	}
 };
 class Kv :public Quadrate {
@@ -165,10 +176,10 @@ public:
 	Kv(int a) :Quadrate(a, a, a, a, 90, 90, 90, 90) {}
 	void print_info() const override {
 		std::cout << "Name : Kv\n";
-		check();
+		if(check()==true){
 		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << " d = " << d << std::endl;
 		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << " D = " << D << std::endl;
-		std::cout << "\n";
+		std::cout << "\n";}
 	}
 };
 class Par :public Quadrate {
@@ -176,10 +187,10 @@ public:
 	Par(int a, int b, int A, int B) :Quadrate(a, b, a, b, A, B, A, B) {}
 	void print_info() const override {
 		std::cout << "Name : Par\n";
-		check();
+		if(check()==true){
 		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << " d = " << d << std::endl;
 		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << " D = " << D << std::endl;
-		std::cout << "\n";
+		std::cout << "\n";}
 	}
 };
 class Rm :public Quadrate {
@@ -187,10 +198,10 @@ public:
 	Rm(int a, int A, int B) :Quadrate(a, a, a, a, A, B, A, B) {}
 	void print_info() const override {
 		std::cout << "Name : Rm\n";
-		check();
+		if(check()==true){
 		std::cout << "Sides : a = " << a << " b = " << a << " c = " << c << " a = " << d << std::endl;
 		std::cout << "Corners : A = " << A << " A = " << B << " C = " << A << " D = " << B << std::endl;
-		std::cout << "\n";
+		std::cout << "\n";}
 	}
 };
 void print_info(const Figure* figure) {
@@ -213,11 +224,12 @@ int main()
 	print_info(rbtr);
 	//print_info(rm);
 	//delete rm;
-	//delete rbtr;
+	delete rbtr;
 	Triangle* triangl = new Triangle(10, 20, 30, 40, 50, 60);
 	print_info(triangl);
 	Quadrate* quadrat = new Quadrate(10, 20, 30, 40, 50, 60, 70, 80);
 	print_info(quadrat);
-
+	delete triangl;
+	delete quadrat;
 
 }

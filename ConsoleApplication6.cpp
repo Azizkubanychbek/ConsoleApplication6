@@ -1,10 +1,19 @@
 
 #include <iostream>
 class bad_length:std::exception{
-public:const char* what() const override { return "Ошибка создания фигуры"; }};
-void thr() {
-	throw bad_length();
+public://const char* what() const override { return "Ошибка создания фигуры"; }
+	  bad_length(const std::string& error_message) : error_message_(error_message) {}
 
+	  const char* what() const noexcept override {
+		  return error_message_.c_str();
+	  }
+
+private:
+	std::string error_message_;
+};
+void thr(std::string g) {
+
+		throw bad_length(g);
 }
 class Figure {
 public:
@@ -16,21 +25,14 @@ public:
 			std::cout << "Corners : A = " << A << " B = " << C << " C = " << C << std::endl;
 			std::cout << "\n";
 		}
+		else {
+			thr("Error: Неправиьная фигура");
+		}
 	}
 	bool check() const {
 
-		try {
-			if (A + B + C == 180) {
-				std::cout << "Правильный трегуольник";
-				return true;
-			}
-			else {
-				thr();
-				return false;
-			}
-		}
-		catch (const bad_length& ex) {std::cout << ex.what() << "Heправильный трегуольник cумма не равна 180\n" << std::endl;}
-		
+		return true;
+
 		
 	}
 protected:
@@ -53,12 +55,24 @@ public:
 	void print_info() const override {
 		std::cout << "Name : Triangle\n";
 		if (check() == true) {
+			std::cout << "Правильный трегуольник";
 			std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << std::endl;
 			std::cout << "Corners : A = " << A << " B = " << B << " C = " << C << std::endl;
 			std::cout << "\n";
 		}
+		else {
+			thr("Error: Сумма  углов не равна 180");
+		}
 	}
-
+	bool check() const {
+		if (A + B + C == 180) {
+			return true;
+		}
+		else {
+		
+			return false;
+		}
+	}
 
 };
 class Quadrate :public Figure {
@@ -79,23 +93,25 @@ public:
 	void print_info() const override {
 		std::cout << "Name : Quadrate\n";
 		if (check() == true) {
+			std::cout << "Правильный quadrate";
 			std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << " d = " << d << std::endl;
 			std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << " D = " << D << std::endl;
 			std::cout << "\n";
 		}
+		else {
+			thr("Error: Heправильный четырехугол cумма не равна 360\n");
+		}
+		
 	}
 	bool check() const {
-		try {
 			if (A + B + C + D == 360) {
-				std::cout << "Правильный quadrate";
+
 				return true;
 			}
 			else {
-				thr();
 				return false;
 			}
-		}
-		catch (const bad_length& ex) { std::cout << ex.what() << "Heправильный четырехугол cумма не равна 360\n" << std::endl; }
+		//catch (const bad_length& ex) { std::cout << ex.what() <<  << std::endl; }
 		
 
 	}
@@ -120,6 +136,9 @@ public:
 			std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << std::endl;
 			std::cout << "\n";
 		}
+		else {
+			thr("Error: Сумма  углов не равна 180");
+		}
 	}
 
 };
@@ -138,6 +157,9 @@ public:
 		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << std::endl;
 		std::cout << "\n";
 		}
+		else {
+			thr("Error: Сумма  углов не равна 180");
+		}
 	}
 
 };
@@ -155,6 +177,9 @@ public:
 			std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << std::endl;
 			std::cout << "\n";
 		}
+		else {
+			thr("Error: Сумма углов не равна 180");
+		}
 	}
 
 };
@@ -169,6 +194,9 @@ public:
 		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << " d = " << d << std::endl;
 		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << " D = " << D << std::endl;
 		std::cout << "\n";}
+		else {
+			thr("Error: Heправильный четырехугол cумма не равна 360\n");
+		}
 	}
 };
 class Kv :public Quadrate {
@@ -180,6 +208,9 @@ public:
 		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << " d = " << d << std::endl;
 		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << " D = " << D << std::endl;
 		std::cout << "\n";}
+		else {
+			thr("Error: Heправильный четырехугол cумма не равна 360\n");
+		}
 	}
 };
 class Par :public Quadrate {
@@ -191,6 +222,9 @@ public:
 		std::cout << "Sides : a = " << a << " b = " << b << " c = " << c << " d = " << d << std::endl;
 		std::cout << "Corners : A = " << A << " A = " << B << " C = " << C << " D = " << D << std::endl;
 		std::cout << "\n";}
+		else {
+			thr("Error: Heправильный четырехугол cумма не равна 360\n");
+		}
 	}
 };
 class Rm :public Quadrate {
@@ -202,6 +236,9 @@ public:
 		std::cout << "Sides : a = " << a << " b = " << a << " c = " << c << " a = " << d << std::endl;
 		std::cout << "Corners : A = " << A << " A = " << B << " C = " << A << " D = " << B << std::endl;
 		std::cout << "\n";}
+		else {
+			thr("Error: Heправильный четырехугол cумма не равна 360\n");
+		}
 	}
 };
 void print_info(const Figure* figure) {
@@ -220,16 +257,38 @@ int main()
 	Par par(10, 12, 60, 30);*/
 	//Rm rm(10, 30, 60);
 	//Rm* rm = new Rm(10, 30, 60);
-	Rbtr* rbtr = new Rbtr(10, 12, 60, 67);
-	print_info(rbtr);
+	Rbtr* rbtr = new Rbtr(10, 12, 60, 60);
+	//print_info(rbtr);
 	//print_info(rm);
 	//delete rm;
-	delete rbtr;
 	Triangle* triangl = new Triangle(10, 20, 30, 40, 50, 60);
-	print_info(triangl);
+	//print_info(triangl);
 	Quadrate* quadrat = new Quadrate(10, 20, 30, 40, 50, 60, 70, 80);
-	print_info(quadrat);
+	//print_info(quadrat);
+
+	try {
+		print_info(rbtr);
+	}
+	catch (const bad_length& ex) {
+		std::cerr << ex.what() << std::endl;
+	}
+
+	try {
+		print_info(triangl);
+	}
+	catch (const bad_length& ex) {
+		std::cerr << ex.what() << std::endl;
+	}
+
+	try {
+		print_info(quadrat);
+	}
+	catch (const bad_length& ex) {
+		std::cerr << ex.what() << std::endl;
+	}
+
 	delete triangl;
 	delete quadrat;
+	delete rbtr;
 
 }
